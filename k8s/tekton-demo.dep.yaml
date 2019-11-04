@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tekton-demo
+  namespace: tekton-pipelines
+  labels:
+    app: tekton-demo
+    ver: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tekton-demo
+      ver: v1
+  template:
+    metadata:
+      labels:
+        app: tekton-demo
+        ver: v1
+    spec:
+      imagePullSecrets:
+      - name: tekton-demo-registry-secret
+      containers:
+      - name: tekton-demo
+        image: harbor.k8s.bns.co.kr/tanggle/tekton-demo:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP

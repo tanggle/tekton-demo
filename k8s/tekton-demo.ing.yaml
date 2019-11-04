@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/backend-protocol: http
+  labels:
+    app: tekton-demo
+    ver: v1
+  name: tekton-demo
+  namespace: tekton-pipelines
+spec:
+  rules:
+  - host: tekton-demo.speakingbuddy.ai
+    http:
+      paths:
+      - backend:
+          serviceName: tekton-demo
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - tekton-demo.speakingbuddy.ai
+    secretName: tls.speakingbuddy.ai

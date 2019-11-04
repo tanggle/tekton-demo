@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: git-source
+  namespace: tekton-pipelines
+spec:
+  type: git
+  params:
+    - name: revision
+      value: master
+    - name: url
+      value: https://dev.k8s.bns.co.kr:10443/tanggle/tekton-demo.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: reg-target
+  namespace: tekton-pipelines
+spec:
+  type: image
+  params:
+    - name: url
+      value: harbor.k8s.bns.co.kr/tanggle/tekton-demo:latest

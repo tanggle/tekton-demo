@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build-docker-image-from-git-source
+spec:
+  inputs:
+    resources:
+      - name: git-source
+        type: git
+    params:
+      - name: pathToDockerFile
+        description: The path to the Dockerfile to build
+        default: /workspace/git-source/Dockerfile
+      - name: pathToContext
+        description: The build context used by Kaniko
+        default: /workspace/git-source
+  outputs:
+    resources:
+      - name: reg-target
+        type: image
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:v0.13.0
+      env:
+        - name: "DOCKER_CONFIG"
+          value: "/builder/home/.docker/"
+      command:
+        - /kaniko/executor
+      args:
+        - --dockerfile=${inputs.params.pathToDockerFile}
+        - --destination=${outputs.resources.reg-target.url}
+        - --context=${inputs.params.pathToContext}

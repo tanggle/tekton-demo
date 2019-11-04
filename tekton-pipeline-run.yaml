@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: tekton-demo-pipeline-run
+spec:
+  serviceAccountName: tekton-demo
+  pipelineRef:
+    name: tekton-demo-pipeline
+  resources:
+    - name: tekton-demo-git-rep
+      resourceRef:
+        name: tekton-demo-git-rep
+    - name: tekton-demo-img-reg
+      resourceRef:
+        name: tekton-demo-img-reg
